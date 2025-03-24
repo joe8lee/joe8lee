@@ -538,7 +538,10 @@ function customUiInit() {
 
     function loginForm() {
         // Check session and restore projects on init
-        checkSessionAndRestoreProjects();
+
+        setTimeout(function() {
+            checkSessionAndRestoreProjects();
+        }, 500)
         
         // Function to check session and restore projects
         function checkSessionAndRestoreProjects() {
@@ -558,9 +561,7 @@ function customUiInit() {
                 });
                 
                 // Populate projects
-                setTimeout(function() {
-                    populateProjects(projects);
-                }, 500)
+                populateProjects(projects);
                 
                 // Show project containers
                 projectContainers.forEach((container) => {
@@ -1703,7 +1704,6 @@ function customSimplifiedInit() {
         const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
         const storedProjects = JSON.parse(sessionStorage.getItem('projectsData') || '[]');
         
-        setTimeout(function() {
             // Function to render projects from data
             function renderProjects(projects) {
                 const projectContainers = document.querySelectorAll('.projects-container');
@@ -1789,7 +1789,11 @@ function customSimplifiedInit() {
             
             // If already authenticated, render projects from sessionStorage
             if (isAuthenticated && storedProjects.length > 0) {
+
+        setTimeout(function() {
                 renderProjects(storedProjects);
+
+        }, 500)
             } else {
                 // If not authenticated, show login form and hide projects
                 const projectContainers = document.querySelectorAll('.projects-container');
@@ -1797,7 +1801,6 @@ function customSimplifiedInit() {
                     container.classList.add('is--hidden');
                 });
             }
-        }, 500)
     
         // Login form submission handler
         document.querySelectorAll('.login-form').forEach((form) => {
