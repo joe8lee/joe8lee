@@ -1,4 +1,3 @@
-
 // Update the status dynamically every minute (customUiInit)
 let onlineStatusInterval;
 let consoleCheckInterval;
@@ -559,7 +558,9 @@ function customUiInit() {
                 });
                 
                 // Populate projects
-                populateProjects(projects);
+                setTimeout(function() {
+                    populateProjects(projects);
+                }, 500)
                 
                 // Show project containers
                 projectContainers.forEach((container) => {
@@ -1702,99 +1703,101 @@ function customSimplifiedInit() {
         const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
         const storedProjects = JSON.parse(sessionStorage.getItem('projectsData') || '[]');
         
-        // Function to render projects from data
-        function renderProjects(projects) {
-            const projectContainers = document.querySelectorAll('.projects-container');
-            const projectsInfoContainer = document.querySelector('.projects-info-container');
-            const loginContainers = document.querySelectorAll('.login-container');
-            const projectTemplate = document.getElementById('project-template').content;
-            const projectInfoTemplate = document.getElementById('project-info-template').content;
-            
-            // Clear existing projects to avoid duplication
-            projectContainers.forEach((container) => {
-                container.innerHTML = '';
-            });
-            projectsInfoContainer.innerHTML = ''; // Clear project info
-            
-            projects.forEach((project, index) => {
-                // Clone the project template
-                const cloneProject = projectTemplate.cloneNode(true);
-                const projectTitle = cloneProject.querySelector('.project-title');
-                const openButton = cloneProject.querySelector('.open-button');
-    
-                if (!openButton) {
-                    console.error('Open button not found in the cloned project template!');
-                    return;
-                }
-    
-                projectTitle.textContent = project.title;
-    
-                // Set a unique identifier for the project info
-                const projectInfoId = `project-${index}`;
-                openButton.dataset.projectId = projectInfoId;
+        setTimeout(function() {
+            // Function to render projects from data
+            function renderProjects(projects) {
+                const projectContainers = document.querySelectorAll('.projects-container');
+                const projectsInfoContainer = document.querySelector('.projects-info-container');
+                const loginContainers = document.querySelectorAll('.login-container');
+                const projectTemplate = document.getElementById('project-template').content;
+                const projectInfoTemplate = document.getElementById('project-info-template').content;
                 
-                // Clone the project info template
-                const cloneInfo = projectInfoTemplate.cloneNode(true);
-                cloneInfo.querySelector('.project-info-title').textContent = project.title;
-                cloneInfo.querySelector('.project-description').textContent = project.description;
-                cloneInfo.querySelector('.project-link').href = project.link;
-    
-                // Populate the image
-                const projectImage = cloneInfo.querySelector('.project-image');
-                if (project.image) {
-                    projectImage.src = project.image;
-                    projectImage.alt = `Image of ${project.title}`;
-                } else {
-                    projectImage.style.display = 'none'; // Hide the image element if no image is provided
-                }
-    
-                const projectInfo = cloneInfo.querySelector('.project-info');
-                projectInfo.classList.add('is--hidden');
-                projectInfo.id = projectInfoId;
-    
-                // Add steps to the project info
-                const stepsList = cloneInfo.querySelector('.project-steps');
-                if (project.steps && Array.isArray(project.steps)) {
-                    project.steps.forEach((step) => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = step;
-                        stepsList.appendChild(listItem);
-                    });
-                }
-    
-                // Append the cloned project to each project container
+                // Clear existing projects to avoid duplication
                 projectContainers.forEach((container) => {
-                    const clonedProject = cloneProject.cloneNode(true);  // Clone for each container
-                    container.appendChild(clonedProject);
+                    container.innerHTML = '';
                 });
-    
-                // Append the project info to the info container
-                projectsInfoContainer.appendChild(cloneInfo);
-            });
-    
-            // Show all project containers and hide login forms
-            projectContainers.forEach((container) => {
-                container.classList.remove('is--hidden');
-            });
-    
-            loginContainers.forEach((container) => {
-                container.style.display = 'none';
-            });
-            
-            // Setup event listeners for project buttons
-            setupProjectButtons();
-        }
+                projectsInfoContainer.innerHTML = ''; // Clear project info
+                
+                projects.forEach((project, index) => {
+                    // Clone the project template
+                    const cloneProject = projectTemplate.cloneNode(true);
+                    const projectTitle = cloneProject.querySelector('.project-title');
+                    const openButton = cloneProject.querySelector('.open-button');
         
-        // If already authenticated, render projects from sessionStorage
-        if (isAuthenticated && storedProjects.length > 0) {
-            renderProjects(storedProjects);
-        } else {
-            // If not authenticated, show login form and hide projects
-            const projectContainers = document.querySelectorAll('.projects-container');
-            projectContainers.forEach((container) => {
-                container.classList.add('is--hidden');
-            });
-        }
+                    if (!openButton) {
+                        console.error('Open button not found in the cloned project template!');
+                        return;
+                    }
+        
+                    projectTitle.textContent = project.title;
+        
+                    // Set a unique identifier for the project info
+                    const projectInfoId = `project-${index}`;
+                    openButton.dataset.projectId = projectInfoId;
+                    
+                    // Clone the project info template
+                    const cloneInfo = projectInfoTemplate.cloneNode(true);
+                    cloneInfo.querySelector('.project-info-title').textContent = project.title;
+                    cloneInfo.querySelector('.project-description').textContent = project.description;
+                    cloneInfo.querySelector('.project-link').href = project.link;
+        
+                    // Populate the image
+                    const projectImage = cloneInfo.querySelector('.project-image');
+                    if (project.image) {
+                        projectImage.src = project.image;
+                        projectImage.alt = `Image of ${project.title}`;
+                    } else {
+                        projectImage.style.display = 'none'; // Hide the image element if no image is provided
+                    }
+        
+                    const projectInfo = cloneInfo.querySelector('.project-info');
+                    projectInfo.classList.add('is--hidden');
+                    projectInfo.id = projectInfoId;
+        
+                    // Add steps to the project info
+                    const stepsList = cloneInfo.querySelector('.project-steps');
+                    if (project.steps && Array.isArray(project.steps)) {
+                        project.steps.forEach((step) => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = step;
+                            stepsList.appendChild(listItem);
+                        });
+                    }
+        
+                    // Append the cloned project to each project container
+                    projectContainers.forEach((container) => {
+                        const clonedProject = cloneProject.cloneNode(true);  // Clone for each container
+                        container.appendChild(clonedProject);
+                    });
+        
+                    // Append the project info to the info container
+                    projectsInfoContainer.appendChild(cloneInfo);
+                });
+        
+                // Show all project containers and hide login forms
+                projectContainers.forEach((container) => {
+                    container.classList.remove('is--hidden');
+                });
+        
+                loginContainers.forEach((container) => {
+                    container.style.display = 'none';
+                });
+                
+                // Setup event listeners for project buttons
+                setupProjectButtons();
+            }
+            
+            // If already authenticated, render projects from sessionStorage
+            if (isAuthenticated && storedProjects.length > 0) {
+                renderProjects(storedProjects);
+            } else {
+                // If not authenticated, show login form and hide projects
+                const projectContainers = document.querySelectorAll('.projects-container');
+                projectContainers.forEach((container) => {
+                    container.classList.add('is--hidden');
+                });
+            }
+        }, 500)
     
         // Login form submission handler
         document.querySelectorAll('.login-form').forEach((form) => {
@@ -2184,7 +2187,9 @@ function customResume() {
         
         // If already authenticated and we have projects, show them immediately
         if (isAuthenticated && projects.length > 0) {
-            displayProjects(projects);
+            setTimeout(function() {
+                displayProjects(projects);
+            }, 500)
         } else {
             // Otherwise, show the login form and set up the event listener
             setupLoginForm();
@@ -2904,7 +2909,7 @@ barba.init({
                 console.clear()
                 customUiInit()
                 globalFunctions()
-                console.log("entering custom.UI");
+                console.log("entering custom.UI")
             },
             beforeLeave(data){
                 cleanupFunction()
@@ -2951,6 +2956,6 @@ barba.init({
                 cleanupFunction()
                 console.log("leaving 404 not found");
             }
-        },
+        }
     ]
 })
