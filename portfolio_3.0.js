@@ -1700,6 +1700,7 @@ function customSimplifiedInit() {
     }
 
     function loginForm() {
+        setTimeout(function() {
         // Check if user is already authenticated via sessionStorage
         const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
         const storedProjects = JSON.parse(sessionStorage.getItem('projectsData') || '[]');
@@ -1789,11 +1790,8 @@ function customSimplifiedInit() {
             
             // If already authenticated, render projects from sessionStorage
             if (isAuthenticated && storedProjects.length > 0) {
-
-        setTimeout(function() {
                 renderProjects(storedProjects);
 
-        }, 500)
             } else {
                 // If not authenticated, show login form and hide projects
                 const projectContainers = document.querySelectorAll('.projects-container');
@@ -1935,6 +1933,7 @@ function customSimplifiedInit() {
                 }
             });
         });
+    },500)
     }
 
     function submitForm() {
