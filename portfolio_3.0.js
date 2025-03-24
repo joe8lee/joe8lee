@@ -1933,7 +1933,7 @@ function customSimplifiedInit() {
                 }
             });
         });
-    },500)
+    },2500)
     }
 
     function submitForm() {
