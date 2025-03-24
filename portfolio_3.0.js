@@ -1394,7 +1394,7 @@ function customUiInit() {
     customInitNavigation(); 
     setTimeout(function(){
         loginForm()
-    }, 10)
+    }, 100)
     customInitFolderItems()
     updateOnlineStatus();
     updateLocalTime();
@@ -2158,7 +2158,7 @@ function customSimplifiedInit() {
     listLogic()
     setTimeout(function(){
         loginForm()
-    }, 10)
+    }, 100)
     submitForm()
     updateOnlineStatus()
     updateLocalTime()
@@ -2665,7 +2665,7 @@ function customResume() {
     listLogic()
     setTimeout(function(){
         loginForm()
-    }, 10)
+    }, 100)
     submitForm()
     updateOnlineStatus()
     updateLocalTime()
